@@ -50,10 +50,8 @@
         <record id="view_picking_out_form_ace" model="ir.ui.view">
             <field name="name">view.picking.out.form.ace</field>
             <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_form"/>
-            <field name="arch" type="xml">
-                
-            </field>
+
+ 
         </record>
         
     </data>
