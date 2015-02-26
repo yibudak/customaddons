@@ -192,7 +192,8 @@ class  wizard_picking_tracking(osv.osv_memory):
                     'product_qty':     line.qty , 
                     'product_uos_qty': line.qty, 
                     'tracking_id':     new_pack_id,  
-                    'procurements':    False,                                                       
+                    'procurements':    False,
+                    'state':           stock_move.state,                                                       
                 }) 
                 new_move_id = stock_move_obj.create(cr, uid, new_move_data)
                 

@@ -37,7 +37,8 @@ class stock_picking(osv.osv):
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
         po_id = [picking.id]
         self.pool.get('stock.picking.out').btn_calc_weight(cr, uid, po_id)
-        invoice_vals = super(stock_picking, self)._prepare_invoice(cr, uid, picking, partner, inv_type, journal_id, context) 
+        invoice_vals = super(stock_picking, self)._prepare_invoice(cr, uid, picking, partner, inv_type, journal_id, context)
+
         invoice_tracking_ids = []
         for pack in picking.packing_tracking_ids:
             if pack.id:
@@ -53,9 +54,11 @@ class stock_picking(osv.osv):
             grouped invoices
         """
         invoice_vals = super(stock_picking, self)._prepare_invoice_group(cr, uid, picking, partner, invoice, context)
-        if invoice_vals
-        
+
         invoice_tracking_ids = []
+        for pack in invoice.packing_tracking_ids:
+            if pack.id:
+                invoice_tracking_ids.append(pack.id)
         for pack in picking.packing_tracking_ids:
             if pack.id:
                 invoice_tracking_ids.append(pack.id)
@@ -63,7 +66,6 @@ class stock_picking(osv.osv):
                              'carrier_id': picking.carrier_id.id,
                              'address_contact_id': picking.partner_id.id,
                              })
-        
         if picking.sale_id:
             invoice_vals['name'] = (invoice.name or '') + ', ' + (picking.sale_id.client_order_ref or '')
         return invoice_vals    
@@ -72,8 +74,8 @@ class stock_picking(osv.osv):
     def action_invoice_create(self, cr, uid, ids, journal_id=False, group=False, type='out_invoice', context=None):
         res = super(stock_picking, self).action_invoice_create(cr, uid, ids, journal_id, group, type, context)
         invoice_id = int(res.values()[0])
-#        if invoice_id:
-#            self.pool.get('account.invoice').btn_calc_weight_inv(cr, uid, [invoice_id])
+        if invoice_id:
+            self.pool.get('account.invoice').btn_calc_weight_inv(cr, uid, [invoice_id])
         return res
 
 stock_picking()
@@ -131,3 +133,4 @@ class stock_picking_out(osv.osv):
         return True
 
 stock_picking_out()
+
