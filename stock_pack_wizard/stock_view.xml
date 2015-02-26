@@ -42,17 +42,13 @@
             </field>
         </record>
         
-        <record id="view_picking_out_form_ace" model="ir.ui.view">
-            <field name="name">view.picking.out.form.ace</field>
+             <record id="view_picking_out_form_alt2" model="ir.ui.view">
+            <field name="name">view.picking.out.form.ace2</field>
             <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page/group" position="after">
-                    <group>
-                        <group col='1' colspan="6">
-                            <group colspan="4">
-
-                            </group>
+                    <group>                        
                             <group colspan="6">
                                    <field mode="tree" name="packing_tracking_ids" select="1" nolabel='1' widget="one2many_list">
                                     <tree string="Packing Details" editable="bottom">
@@ -70,14 +66,14 @@
                                     </tree>
                                 </field>
                             </group>
-                        </group>
+                   
                         <group>
                             <group>
                                 <field name="total_grosswg" />
                                 <field name="total_netwg" />
                                 <field name="total_num_pack" />
                                 <button name="btn_calc_weight" string="Calculate" type="object" />
-                                <button name="btn_print_pack" string="testt" type="object" />
+                      
                                 
                             </group>
                             <group>
@@ -86,7 +82,9 @@
                                 <field name="total_volume" />
 
                             </group>
-                        </group>
+
+                        </group>    
+                   
                     </group>
                 </xpath>
             </field>

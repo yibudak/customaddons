@@ -48,6 +48,27 @@ class stock_picking(osv.osv):
                              })
         return invoice_vals
 
+    def _prepare_invoice_group(self, cr, uid, picking, partner, invoice, context=None):
+        """ Inherit the original function of the 'stock' module in order to add stock_tracking_ids to 
+            grouped invoices
+        """
+        invoice_vals = super(stock_picking, self)._prepare_invoice_group(cr, uid, picking, partner, invoice, context)
+        if invoice_vals
+        
+        invoice_tracking_ids = []
+        for pack in picking.packing_tracking_ids:
+            if pack.id:
+                invoice_tracking_ids.append(pack.id)
+        invoice_vals.update({'packing_tracking_ids': [(6, 0, invoice_tracking_ids)],
+                             'carrier_id': picking.carrier_id.id,
+                             'address_contact_id': picking.partner_id.id,
+                             })
+        
+        if picking.sale_id:
+            invoice_vals['name'] = (invoice.name or '') + ', ' + (picking.sale_id.client_order_ref or '')
+        return invoice_vals    
+    
+
     def action_invoice_create(self, cr, uid, ids, journal_id=False, group=False, type='out_invoice', context=None):
         res = super(stock_picking, self).action_invoice_create(cr, uid, ids, journal_id, group, type, context)
         invoice_id = int(res.values()[0])

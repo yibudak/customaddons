@@ -3,12 +3,12 @@
     <data>
 
         
-        <record id="view_invoice_form_ace" model="ir.ui.view">
-            <field name="name">view.invoice.form.alt</field>
+        <record id="view_invoice_form_packingwizard" model="ir.ui.view">
+            <field name="name">view.invoice.form.alt2</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                 <field name="tax_line" position="after">
+                 <field name="comment" position="after">
                     <group>
                         <group col='1' colspan="6">
                             <group colspan="4">
@@ -37,7 +37,7 @@
                                 <field name="total_grosswg" />
                                 <field name="total_netwg" />
                                 <field name="total_num_pack" />
-                                <button name="btn_calc_weight" string="Calculate" type="object" />
+                                <button name="btn_calc_weight_inv" string="Calculate" type="object" />
                             </group>
                             <group>
                                 <field name="total_air" />

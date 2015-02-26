@@ -49,13 +49,14 @@
     Report created: Packing List (can be printed from Pack Tree view)
     
     """,
-    'depends': ['base','stock','report_webkit'],
+    'depends': ['base','stock','report_webkit','altinkaya_packing'],
     'category': '',
     'sequence': 10,
     'demo': [],
     'data': [
         'product_ul_view.xml',
         'stock_tracking_view.xml',
+        'account_invoice_view.xml',
         'wizard/wizard_picking_tracking_view.xml', 
         'stock_picking_view.xml',
         'stock_view.xml',
