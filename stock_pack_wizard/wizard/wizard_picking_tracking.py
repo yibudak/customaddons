@@ -38,14 +38,15 @@ class  wizard_picking_tracking_line(osv.osv_memory):
     }
     
     def onchange_stock_move_id(self, cr, uid, ids, stock_move_id, context=None):
-        data = {'product_id': False, 'tracking_id':False, 'product_qty':0, 'qty':0 }
+        data = {'product_id': False, 'tracking_id':False,'product_uos_qty':0, 'product_qty':0, 'qty':0 }
         if stock_move_id:
             stock_move  = self.pool.get('stock.move').browse(cr, uid, stock_move_id)
             product_id  = stock_move.product_id.id
             tracking_id = stock_move.tracking_id and stock_move.tracking_id.id or False
             product_qty = stock_move.product_qty
+            product_ous_qty = stock_move.product_uos_qty
             qty         = not tracking_id and product_qty or 0.0
-            data.update( {'product_id':product_id, 'tracking_id':tracking_id, 'product_qty':product_qty, 'qty':qty})
+            data.update( {'product_id':product_id, 'tracking_id':tracking_id, 'product_uos_qty':product_uos_qty, 'product_qty':product_qty, 'qty':qty})
         return {'value': data}
 
 wizard_picking_tracking_line()
@@ -79,6 +80,7 @@ class  wizard_picking_tracking(osv.osv_memory):
                    'stock_move_id': move.id, 
                    'product_id':    move.product_id.id, 
                    'product_qty':   move.product_qty,
+                   'product_uos_qty':   move.product_uos_qty,
                    'tracking_id':   move.tracking_id and move.tracking_id.id or False,
                    'qty':           not move.tracking_id and move.product_qty or 0.0 ,
                 }))
@@ -89,6 +91,7 @@ class  wizard_picking_tracking(osv.osv_memory):
                    'stock_move_id': move.id, 
                    'product_id':    move.product_id.id, 
                    'product_qty':   move.product_qty,
+                   'product_uos_qty':   move.product_uos_qty,
                    'tracking_id':   move.tracking_id and move.tracking_id.id or False,
                    'qty':           not move.tracking_id and move.product_qty or 0.0 ,
             }))
@@ -181,7 +184,7 @@ class  wizard_picking_tracking(osv.osv_memory):
             
             if res_product_qty:
                 # update old stock move count procurement count
-                stock_move_obj.write(cr, uid, stock_move.id, {'product_qty':res_product_qty})
+                stock_move_obj.write(cr, uid, stock_move.id, {'product_uos_qty':res_product_qty, 'product_qty':res_product_qty})
                 
                 procurement_id = stock_move.procurements and stock_move.procurements[0].id
                 
