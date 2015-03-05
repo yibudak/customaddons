@@ -16,6 +16,7 @@
           	<group  col="6" string="Measurements">
 				 <field name="ul_id" colspan="3"/>
 				 <field name="gross_weight" colspan="3"/>
+				 <field name="pack_no" />
            </group >
            <group  col="6" string='Stock Moves'>
 	          <field name="lines" colspan="6" context="{'picking_id':picking_id}" nolabel="1">

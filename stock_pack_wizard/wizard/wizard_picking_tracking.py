@@ -29,12 +29,13 @@ class  wizard_picking_tracking_line(osv.osv_memory):
     
     _columns = {
         'name':          fields.char('name', size=32),
-        'wizard_id':        fields.many2one('wizard.picking.tracking', 'WPT'),
+        'wizard_id':     fields.many2one('wizard.picking.tracking', 'WPT'),
         'qty':           fields.float('Pack Quantity'),
         'stock_move_id': fields.many2one('stock.move',   'Stock move'),
         'product_id':    fields.related('stock_move_id', 'product_id',  type='many2one',relation='product.product', string='Product', readonly=True),
         'tracking_id':   fields.related('stock_move_id', 'tracking_id', type='many2one',relation='stock.tracking',  string='Pack',    readonly=True),
         'product_qty':   fields.related('stock_move_id', 'product_qty', type='float',   string='Delivery Quantity', readonly=True),
+        'pack_no':       fields.integer('Pack No'),
     }
     
     def onchange_stock_move_id(self, cr, uid, ids, stock_move_id, context=None):
@@ -120,7 +121,18 @@ class  wizard_picking_tracking(osv.osv_memory):
             move       = src_record
             sale_order = move.picking_id.sale_id
             return sale_order.partner_shipping_id and sale_order.partner_shipping_id.name or False
-    
+
+    def _get_pack_number(self, cr, uid, context=None):
+        src_model  = context.get('active_model')
+        src_record = self.pool.get(src_model).browse(cr, uid, context.get('active_id',False))
+        packno=1
+        if src_model == 'stock.picking.out':
+            picking_out = src_record
+            for pack in picking_out.packing_tracking_ids:
+                packno = packno +1               
+            return packno
+        else:
+            return packno    
     
     _columns={
         'name': fields.char('name', size=32, readonly=True),
@@ -137,7 +149,9 @@ class  wizard_picking_tracking(osv.osv_memory):
     _defaults={
         'lines': lambda self,cr,uid,context: self._get_lines(cr, uid, context=context), 
         'picking_id': lambda self,cr,uid,context: self._get_picking(cr, uid, context=context), 
-        'pack_address': lambda self,cr,uid,context: self._get_pack_address(cr, uid, context=context), 
+        'pack_address': lambda self,cr,uid,context: self._get_pack_address(cr, uid, context=context),
+        'pack_no': lambda self,cr,uid,context: self._get_pack_number(cr, uid, context=context),
+         
     }
     
     
