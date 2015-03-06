@@ -35,7 +35,8 @@ class  wizard_picking_tracking_line(osv.osv_memory):
         'product_id':    fields.related('stock_move_id', 'product_id',  type='many2one',relation='product.product', string='Product', readonly=True),
         'tracking_id':   fields.related('stock_move_id', 'tracking_id', type='many2one',relation='stock.tracking',  string='Pack',    readonly=True),
         'product_qty':   fields.related('stock_move_id', 'product_qty', type='float',   string='Delivery Quantity', readonly=True),
-        'pack_no':       fields.integer('Pack No'),
+        'pack_no':   fields.related('stock_move_id', 'tracking_pack_no', type='integer',   string='Pack No', readonly=True),
+        
     }
     
     def onchange_stock_move_id(self, cr, uid, ids, stock_move_id, context=None):
@@ -82,6 +83,7 @@ class  wizard_picking_tracking(osv.osv_memory):
                    'product_id':    move.product_id.id, 
                    'product_qty':   move.product_qty,
                    'product_uos_qty':   move.product_uos_qty,
+                   'pack_no':   move.tracking_pack_no,
                    'tracking_id':   move.tracking_id and move.tracking_id.id or False,
                    'qty':           not move.tracking_id and move.product_qty or 0.0 ,
                 }))
@@ -93,6 +95,7 @@ class  wizard_picking_tracking(osv.osv_memory):
                    'product_id':    move.product_id.id, 
                    'product_qty':   move.product_qty,
                    'product_uos_qty':   move.product_uos_qty,
+                   'pack_no':   move.tracking_pack_no,
                    'tracking_id':   move.tracking_id and move.tracking_id.id or False,
                    'qty':           not move.tracking_id and move.product_qty or 0.0 ,
             }))
@@ -114,13 +117,26 @@ class  wizard_picking_tracking(osv.osv_memory):
         src_record = self.pool.get(src_model).browse(cr, uid, context.get('active_id',False))
         if src_model == 'stock.picking.out':
             picking_out = src_record
-            sale_order  = picking_out.sale_id
-            return sale_order.partner_shipping_id and sale_order.partner_shipping_id.name or False
+            packaddres = picking_out.partner_id.contact_address
+            return packaddres or False
         
         elif src_model == 'stock.move':
             move       = src_record
             sale_order = move.picking_id.sale_id
-            return sale_order.partner_shipping_id and sale_order.partner_shipping_id.name or False
+            return sale_order.partner_shipping_id.contact_address or False
+
+    def _get_pack_receiver(self, cr, uid, context=None):
+        src_model  = context.get('active_model')
+        src_record = self.pool.get(src_model).browse(cr, uid, context.get('active_id',False))
+        if src_model == 'stock.picking.out':
+            picking_out = src_record
+            packreceiver = picking_out.partner_id.display_name
+            return packreceiver or False
+        elif src_model == 'stock.move':
+            move       = src_record
+            sale_order = move.picking_id.sale_id
+            packreceiver = sale_order.partner_shipping_id.display_name
+            return packreceiver or False
 
     def _get_pack_number(self, cr, uid, context=None):
         src_model  = context.get('active_model')
@@ -130,9 +146,8 @@ class  wizard_picking_tracking(osv.osv_memory):
             picking_out = src_record
             for pack in picking_out.packing_tracking_ids:
                 packno = packno +1               
-            return packno
-        else:
-            return packno    
+        return packno
+   
     
     _columns={
         'name': fields.char('name', size=32, readonly=True),
@@ -140,9 +155,11 @@ class  wizard_picking_tracking(osv.osv_memory):
         'ul_id': fields.many2one('product.ul', 'Pack Template', required=True),
         'lines': fields.one2many('wizard.picking.tracking.line', 'wizard_id', 'Lines'),
         
-        'pack_address': fields.char('Address', size=128),
+        'pack_receiver': fields.char('Receiver', size=200),
+        'pack_address': fields.char('Address', size=300),
         'pack_note':    fields.char('Note', size=128),
         'gross_weight': fields.float('GW (Kg)'),
+        'pack_no':       fields.integer('Pack No'),
         #'net_weight':   fields.float('NW (Kg)'),
     }
     
@@ -150,6 +167,7 @@ class  wizard_picking_tracking(osv.osv_memory):
         'lines': lambda self,cr,uid,context: self._get_lines(cr, uid, context=context), 
         'picking_id': lambda self,cr,uid,context: self._get_picking(cr, uid, context=context), 
         'pack_address': lambda self,cr,uid,context: self._get_pack_address(cr, uid, context=context),
+        'pack_receiver': lambda self,cr,uid,context: self._get_pack_receiver(cr, uid, context=context),
         'pack_no': lambda self,cr,uid,context: self._get_pack_number(cr, uid, context=context),
          
     }
@@ -175,7 +193,9 @@ class  wizard_picking_tracking(osv.osv_memory):
         
         tracking_values = {
             'ul_id':  wizard.ul_id.id,
+            'pack_lineorder': wizard.pack_no,            
             'pack_address': wizard.pack_address,
+            'pack_receiver': wizard.pack_receiver,
             'pack_note':    wizard.pack_note,
             'gross_weight': wizard.gross_weight,
             'pack_h': wizard.ul_id.high,
@@ -226,6 +246,12 @@ class  wizard_picking_tracking(osv.osv_memory):
                 #if not res_product_qty, only to change the package
                 stock_move_obj.write(cr, uid, stock_move.id, {'tracking_id':new_pack_id})
         
+        src_model  = context.get('active_model')
+        src_record = self.pool.get(src_model).browse(cr, uid, context.get('active_id',False))
+        if src_model == 'stock.picking.out':
+            src_id=src_record.id
+            self.pool.get(src_model).btn_calc_weight(cr,uid, [src_id])
+
         #return new_pack_id
         return {
           'name': _('Pack Split'),

@@ -90,5 +90,19 @@
             </field>
         </record>
         
+            <record id="stock_move_tree_altinkaya2" model="ir.ui.view">
+            <field name="name">stock.move.tree_altinkaya2</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                <field name="scrapped" position="after">
+                    <field name="tracking_pack_no" string="P#"> </field>
+                     
+                 </field>
+                            
+            </field>
+        </record>
+                    
+        
     </data>
 </openerp>

@@ -10,13 +10,16 @@
 
 			<group string="Customer Info"  col="6">
 				<field name="picking_id"   colspan="2" invisible="1"/>
-				<field name="pack_address" colspan="2" readonly="1"/>
-				<field name="pack_note"    colspan="2"/>
+                <field name="pack_receiver" colspan="2" readonly="1"/>
+				<field name="pack_no" colspan="2"/>
+				<field name="pack_address" colspan="6" readonly="1"/>
+				
 			</group>
           	<group  col="6" string="Measurements">
-				 <field name="ul_id" colspan="3"/>
-				 <field name="gross_weight" colspan="3"/>
-				 <field name="pack_no" />
+				 <field name="ul_id" colspan="4"/>
+				 <field name="gross_weight" colspan="2"/>
+				 <field name="pack_note"    colspan="4"/>
+
            </group >
            <group  col="6" string='Stock Moves'>
 	          <field name="lines" colspan="6" context="{'picking_id':picking_id}" nolabel="1">
@@ -25,6 +28,7 @@
 						 <field name="product_id"/>
 						 <field name="product_qty"/>
 						 <field name="qty"/>
+						 <field name="pack_no" string="P#"/>
 						 <field name="tracking_id"/>                     		
 					</tree>
 	           </field>

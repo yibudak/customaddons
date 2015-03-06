@@ -76,6 +76,7 @@ class stock_picking(osv.osv):
         invoice_id = int(res.values()[0])
         if invoice_id:
             self.pool.get('account.invoice').btn_calc_weight_inv(cr, uid, [invoice_id])
+            self.pool.get('account.invoice').merge_invoice_lines(cr, uid, [invoice_id])
         return res
 
 stock_picking()
@@ -134,3 +135,15 @@ class stock_picking_out(osv.osv):
 
 stock_picking_out()
 
+
+class stock_move(osv.osv):
+    _inherit = "stock.move"
+    _columns = {
+        'tracking_pack_no':   fields.related('tracking_id', 'pack_lineorder', type='integer', string='Pack No', readonly=True),
+
+
+    }
+    
+stock_move()    
+                
+                
