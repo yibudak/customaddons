@@ -102,7 +102,17 @@
                             
             </field>
         </record>
-                    
+                 
+            <record id="stock_partial_picking_Altinkaya" model="ir.ui.view">
+            <field name="name">stock.partial.picking.altinkaya3</field>
+            <field name="model">stock.partial.picking</field>
+            <field name="inherit_id" ref="stock.stock_partial_picking_form"/>
+            <field name="arch" type="xml">
+                     <field name='cost' position='replace'>
+                            <field name='pack_no' />
+                     </field>                
+            </field>
+            </record>
         
     </data>
 </openerp>

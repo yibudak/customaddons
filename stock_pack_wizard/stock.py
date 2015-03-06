@@ -140,10 +140,32 @@ class stock_move(osv.osv):
     _inherit = "stock.move"
     _columns = {
         'tracking_pack_no':   fields.related('tracking_id', 'pack_lineorder', type='integer', string='Pack No', readonly=True),
-
-
     }
-    
+
 stock_move()    
-                
-                
+        
+               
+class stock_partial_picking_line(osv.TransientModel):
+
+    _inherit = "stock.partial.picking.line"
+
+    _columns = {
+        'pack_no': fields.integer('P#', readonly=True),
+        'product_uom': fields.many2one('product.uom', 'Unit of Measure', required=True, ondelete='CASCADE', readonly=True),
+    }
+    _order = 'pack_no'                
+
+stock_partial_picking_line()
+
+
+class stock_partial_picking(osv.osv_memory):
+    _inherit = "stock.partial.picking"
+
+    def _partial_move_for(self, cr, uid, move, context=None):
+        partial_move = super(stock_partial_picking, self)._partial_move_for(cr, uid, move, context)
+        partial_move.update({
+                             'pack_no' : move.tracking_pack_no,
+                             })
+        return partial_move
+
+stock_partial_picking()
