@@ -5,15 +5,14 @@
 #openerp
 
 OE_USER="odoo"
-OE_HOME="/opt/$OE_USER"
-OCA_HOME="/opt/odoo/custom/repos"
-OE_HOME_EXT="/opt/$OE_USER/$OE_USER-server"
+OE_HOME="/opt/$OE_USER/odoo11"
+OCA_HOME="/opt/odoo/odoo11/repos"
+OE_HOME_EXT="$OE_HOME/$OE_USER-server"
 # Replace for openerp-gevent for enabling gevent mode for chat
 OE_SERVERTYPE="openerp-server"
-OE_VERSION="8.0"
+OE_VERSION="11.0"
 #set the superadmin password
-OE_CONFIG="odoo-server"
-
+OE_CONFIG="odoo-server11"
 
 
 echo -e "\n---- Install community Modules: ----"
@@ -30,6 +29,8 @@ while true; do
                 echo "${D}"
                 cd ${D}   # your processing here
                 pwd
+                git remote -v
+                git branch
                 git pull
                 cd ..
             fi
@@ -45,9 +46,6 @@ while true; do
     read -p "Would you like to git pull odoo repository (y/n)?" yn
     case $yn in
         [Yy]* )  cd $OE_HOME_EXT
-        pwd
-        git pull
-        cd $OE_HOME/customaddons
         pwd
         git pull
         break;;

@@ -1,8 +1,8 @@
 #!/bin/bash
 # -*- encoding: utf-8 -*-
 ################################################################################
-# To run with ubuntu 16.04
-#wget https://raw.githubusercontent.com/aaltinisik/customaddons/8.0/install-odoo.sh
+# To run with ubuntu 18.04
+#wget https://raw.githubusercontent.com/aaltinisik/customaddons/11.0/install-odoo.sh
 #chmod +x install-odoo.sh
 #./install-odoo.sh
 #Custom Changes made by Ahmet Altinisik
