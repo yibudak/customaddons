@@ -2,22 +2,21 @@
 # -*- encoding: utf-8 -*-
 
 ##fixed parameters
-#openerp
+
 
 OE_USER="odoo"
-OE_HOME="/opt/$OE_USER/odoo11"
-OCA_HOME="/opt/odoo/odoo11/repos"
-OE_HOME_EXT="$OE_HOME/$OE_USER-server"
-# Replace for openerp-gevent for enabling gevent mode for chat
-OE_SERVERTYPE="openerp-server"
+OE_HOME="/opt/$OE_USER/11"
+OCA_HOME="/opt/odoo/11/repos"
+OE_HOME_EXT="$OE_HOME/server"
+OE_SERVERTYPE="server"
 OE_VERSION="11.0"
 #set the superadmin password
 OE_CONFIG="odoo-server11"
 
 echo -e "\n---- : ----"
 cd /opt/$OE_USER
-mkdir odoo11
-cd odoo11
+mkdir 11
+cd 11
 mkdir repos
 mkdir addons
 mkdir data

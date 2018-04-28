@@ -37,10 +37,10 @@ echo -e "\n"
 
 
 OE_USER="odoo"
-OE_HOME="/opt/$OE_USER/odoo11"
-OCA_HOME="/opt/odoo/odoo11/repos"
-OE_HOME_EXT="$OE_HOME/$OE_USER-server"
-OE_SERVERTYPE="openerp-server"
+OE_HOME="/opt/$OE_USER/11"
+OCA_HOME="/opt/odoo/11/repos"
+OE_HOME_EXT="$OE_HOME/server"
+OE_SERVERTYPE="server"
 OE_VERSION="11.0"
 OE_CONFIG="odoo-server11"
 
