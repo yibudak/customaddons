@@ -44,12 +44,29 @@ OE_SERVERTYPE="openerp-server"
 OE_VERSION="11.0"
 OE_CONFIG="odoo-server11"
 
+
+
 # Odoo user
 echo -e "\n---- Enter odoo system users info ----"
 sudo adduser odoo --home=/opt/$OE_USER
 
 sudo apt update
 sudo apt upgrade -y
+
+apt-get install postgresql postgresql-contrib -y
+
+sudo sed -i s/"#listen_addresses = 'localhost'"/"listen_addresses = '*'"/g /etc/postgresql/10/main/postgresql.conf
+
+sudo systemctl enable postgresql
+
+echo -e "\n---- Enter password for ODOO PostgreSQL User  ----"
+sudo su - postgres -c "createuser --createdb --username postgres $OE_USER"
+# sudo su - postgres -c 'ALTER USER $OE_USER WITH SUPERUSER;'
+echo -e "\n---- Creating postgres unaccent search extension  ----"
+sudo su - postgres -c 'psql template1 -c "CREATE EXTENSION \"unaccent\"";'
+
+sudo -u postgres psql -U postgres -d postgres -c "alter user $OE_USER with password '$DBPASS';"
+
 
 
 sudo apt-get install git python3 python3-pip python3-suds python3-all-dev \
@@ -64,11 +81,128 @@ sudo -H pip3 install --upgrade pip
 sudo apt install npm  -y
 sudo npm install -g less
 
+sudo -H pip3 install -r ./requirements.txt
 
-sudo -H pip3 install -r /opt/odoo/doc/requirements.txt
-sudo -H pip3 install -r /opt/odoo/requirements.txt
+tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
+sudo cp wkhtmltox/bin/wk* /usr/local/bin/
+wkhtmltopdf --version
 
-sudo curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
-&& sudo apt-get install -y nodejs \
-&& sudo npm install -g less less-plugin-clean-css
 
+echo -e "\n---- Create Log directory ----"
+sudo mkdir /var/log/$OE_USER
+sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
+
+#--------------------------------------------------
+# Install ODOO
+#--------------------------------------------------
+
+echo -e "\n---- Create directories ----"
+sudo su $OE_USER -c "mkdir -p $OE_HOME"
+sudo su $OE_USER -c "mkdir -p $OCA_HOME"
+sudo su $OE_USER -c "mkdir -p $OE_HOME_EXT"
+
+echo -e "\n==== Installing ODOO Server ===="
+sudo su $OE_USER -c "git clone  --depth 1 --branch $OE_VERSION https://github.com/aaltinisik/OCBAltinkaya.git $OE_HOME_EXT/"
+
+echo -e "\n---- Setting permissions on home folder ----"
+sudo chown -R $OE_USER:$OE_USER $OE_HOME/*
+
+echo -e "* Create server config file"
+
+sudo rm /etc/$OE_CONFIG.conf
+sudo touch /etc/$OE_CONFIG.conf
+sudo chown $OE_USER:$OE_USER /etc/$OE_CONFIG.conf
+sudo chmod 640 /etc/$OE_CONFIG.conf
+
+echo -e "* Change server config file"
+
+sudo su root -c "echo '[options]' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'db_host = localhost' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'db_user = $OE_USER' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'db_port = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'db_password = $DBPASS' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'admin_passwd = $OE_SUPERADMIN' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'addons_path = $OE_HOME_EXT/addons,$OE_HOME/addons,$OCA_HOME/repos/customaddons' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## Server startup config - Common options' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Admin password for creating, restoring and backing up databases admin_passwd = admin' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify additional addons paths (separated by commas)' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## XML-RPC / HTTP - XML-RPC Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'unaccent = True' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpc = True' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Specify the TCP IP address for the XML-RPC protocol. The empty string binds to all interfaces.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpc_interface  = ' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the TCP port for the XML-RPC protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpc_port = 8069' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Enable correct behavior when behind a reverse proxy' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'proxy_mode = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## XML-RPC / HTTPS - XML-RPC Secure Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# disable the XML-RPC Secure protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpcs = True' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Specify the TCP IP address for the XML-RPC Secure protocol. The empty string binds to all interfaces.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpcs_interface = ' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the TCP port for the XML-RPC Secure protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'xmlrpcs_port = 8071' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the certificate file for the SSL connection' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'secure_cert_file = server.cert' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the private key file for the SSL connection' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'secure_pkey_file = server.pkey' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## NET-RPC - NET-RPC Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# enable the NETRPC protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'netrpc = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the TCP IP address for the NETRPC protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'netrpc_interface = 127.0.0.1' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the TCP port for the NETRPC protocol' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'netrpc_port = 8070' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## WEB - Web interface Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Filter listed database REGEXP' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'dbfilter = .*' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## Static HTTP - Static HTTP service' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# enable static HTTP service for serving plain HTML files' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'static_http_enable = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the directory containing your static HTML files (e.g '/var/www/')' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'static_http_document_root = None' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the URL root prefix where you want web browsers to access your static HTML files (e.g '/')' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'static_http_url_prefix = None' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## Testing Group - Testing Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Launch a YML test file.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'test_file = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# If set, will save sample of all reports in this directory.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'test_report_directory = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Enable YAML and unit tests.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## Server startup config - Common options' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'test_disable = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Commit database changes performed by YAML or XML tests.' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'test_commit = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '## Logging Group - Logging Configuration' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# file where the server log will be stored (default = None)' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_CONFIG$1.log' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# do not rotate the logfile' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'logrotate = True' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# Send the log to the syslog server' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'syslog = False' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# setup a handler at LEVEL for a given PREFIX. An empty PREFIX indicates the root logger. This option can be repeated. Example: "openerp.orm:DEBUG" or "werkzeug:CRITICAL" (default: ":INFO")' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'log_handler = ["[':INFO']"]' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '# specify the level of the logging. Accepted values: info, debug_rpc, warn, test, critical, debug_sql, error, debug, debug_rpc_answer, notset' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo '#log_level = debug' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'log_level = info' >> /etc/$OE_CONFIG.conf"
+
+
+#--------------------------------------------------
+# Adding ODOO as a deamon (initscript)
+#--------------------------------------------------
+
+
+echo -e "* SystemD Init File"
+
+sudo cp $OE_HOME_EXT/debian/odoo.service /etc/systemd/system/odoo11.service
+sudo chmod 755 /etc/systemd/system/odoo11.service
+sudo chown root: /etc/systemd/system/odoo11.service
+sudo systemctl enable odoo11.service
+
+
+echo -e "* Open ports in UFW for openerp-gevent"
+sudo ufw allow 8072
+echo -e "* Open ports in UFW for openerp-server"
+sudo ufw allow 8069
+
+sudo systemctl start odoo11.service
