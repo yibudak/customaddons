@@ -99,6 +99,8 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 echo -e "\n---- Create directories ----"
 sudo su $OE_USER -c "mkdir -p $OE_HOME"
 sudo su $OE_USER -c "mkdir -p $OCA_HOME"
+sudo su $OE_USER -c "mkdir -p $OE_HOME/addons"
+sudo su $OE_USER -c "mkdir -p $OE_HOME/data"
 sudo su $OE_USER -c "mkdir -p $OE_HOME_EXT"
 
 echo -e "\n==== Installing ODOO Server ===="
@@ -122,7 +124,7 @@ sudo su root -c "echo 'db_user = $OE_USER' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo 'db_port = False' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo 'db_password = $DBPASS' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo 'admin_passwd = $OE_SUPERADMIN' >> /etc/$OE_CONFIG.conf"
-sudo su root -c "echo 'addons_path = $OE_HOME_EXT/addons,$OE_HOME/addons,$OCA_HOME/repos/customaddons' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'addons_path = $OE_HOME_EXT/addons,$OE_HOME/addons,$OCA_HOME/customaddons' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo '## Server startup config - Common options' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo '# Admin password for creating, restoring and backing up databases admin_passwd = admin' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo '# specify additional addons paths (separated by commas)' >> /etc/$OE_CONFIG.conf"
@@ -185,24 +187,39 @@ sudo su root -c "echo 'log_handler = ["[':INFO']"]' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo '# specify the level of the logging. Accepted values: info, debug_rpc, warn, test, critical, debug_sql, error, debug, debug_rpc_answer, notset' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo '#log_level = debug' >> /etc/$OE_CONFIG.conf"
 sudo su root -c "echo 'log_level = info' >> /etc/$OE_CONFIG.conf"
+sudo su root -c "echo 'data_dir = $OE_HOME/data' >> /etc/$OE_CONFIG.conf"
+
 
 
 #--------------------------------------------------
 # Adding ODOO as a deamon (initscript)
 #--------------------------------------------------
-
-
 echo -e "* SystemD Init File"
 
-sudo cp $OE_HOME_EXT/debian/odoo.service /etc/systemd/system/odoo11.service
-sudo chmod 755 /etc/systemd/system/odoo11.service
+sudo rm /etc/systemd/system/odoo11.service
+sudo touch /etc/systemd/system/odoo11.service
 sudo chown root: /etc/systemd/system/odoo11.service
+sudo chmod 755 /etc/systemd/system/odoo11.service
+
+sudo su root -c "echo '[Unit]' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'Description=Odoo Open Source ERP and CRM' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'After=network.target' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo '[Service]' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'Type=simple' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'User=odoo' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'Group=odoo' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'ExecStart=$OE_HOME_EXT/odoo-bin --config /etc/$OE_CONFIG.conf' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'KillMode=mixed' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo '[Install]' >> /etc/systemd/system/odoo11.service"
+sudo su root -c "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/odoo11.service"
+
+
 sudo systemctl enable odoo11.service
+sudo systemctl start odoo11.service
+
 
 
 echo -e "* Open ports in UFW for openerp-gevent"
 sudo ufw allow 8072
 echo -e "* Open ports in UFW for openerp-server"
 sudo ufw allow 8069
-
-sudo systemctl start odoo11.service
