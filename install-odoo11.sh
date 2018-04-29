@@ -27,14 +27,10 @@ echo "net.ipv6.conf.all.disable_ipv6=1" >> /etc/sysctl.d/disableipv6.conf
 
 
 echo -e "---- Decide system passwords ----"
-read -e -s -p "Enter odoo system users password: " OE_USERPASS
-echo -e "\n"
 read -e -s -p "Enter the Database password: " DBPASS
 echo -e "\n"
 read -e -s -p "Enter the Odoo Administrator Password: " OE_SUPERADMIN
 echo -e "\n"
-
-
 
 OE_USER="odoo"
 OE_HOME="/opt/$OE_USER/11"
@@ -44,10 +40,8 @@ OE_SERVERTYPE="server"
 OE_VERSION="11.0"
 OE_CONFIG="odoo-server11"
 
-
-
 # Odoo user
-echo -e "\n---- Enter odoo system users info ----"
+echo -e "\n---- Enter odoo system users password and info ----"
 sudo adduser odoo --home=/opt/$OE_USER
 
 sudo apt update
@@ -218,8 +212,7 @@ sudo systemctl enable odoo11.service
 sudo systemctl start odoo11.service
 
 
-
-echo -e "* Open ports in UFW for openerp-gevent"
-sudo ufw allow 8072
 echo -e "* Open ports in UFW for openerp-server"
 sudo ufw allow 8069
+
+./install-customaddons.sh
