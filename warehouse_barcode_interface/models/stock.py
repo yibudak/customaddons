@@ -1,4 +1,5 @@
 from openerp.osv import fields, osv
+from openerp import api
 from datetime import date, datetime
 import time
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
@@ -88,23 +89,26 @@ class stock_picking(osv.osv):
         return super(stock_picking, self).process_barcode_from_ui(cr, uid, picking_id, barcode_str, visible_op_ids, context=context)
     
     
-     
+    
+    
     def printable_packages(self, pack_id=None):
         
         
         package_ids = { v:i+1 for i,v in enumerate(sorted(self.pack_operation_ids.mapped('result_package_id.id')))}
         
         
-        operaions = self.pool.get('stock.pack.operation')
-        if pack_id:
-            operations = self.pack_operation_ids.filtered(lambda po: po.result_package_id.id == pack_id)
-        else:
-            operations = self.pack_operation_ids.filtered(lambda po: po.result_package_id.id)
+        packed_operations = self.pack_operation_ids.filtered(lambda po: po.result_package_id.id)
+        unpacked_ops = self.pack_operation_ids.filtered(lambda po: po.result_package_id.id == False)
+        num_packs = len(package_ids) + (len(unpacked_ops) > 0 and 1 or 0)
         
+        if pack_id:
+            packed_operations = self.pack_operation_ids.filtered(lambda po: po.result_package_id.id == pack_id)
+            unpacked_ops = False
+            
         res = {}
         
-        for op in operations:
-            package_data = res.get(op.result_package_id.id, {'no':'%s/%s' % (package_ids[op.result_package_id.id],len(package_ids)),
+        for op in packed_operations:
+            package_data = res.get(op.result_package_id.id, {'no':'%s/%s' % (package_ids[op.result_package_id.id],num_packs),
                                                              'name':op.result_package_id.name,
                                                              'dimensions':'5x5x5 cm',
                                                              'net_weight':'net kg',
@@ -116,19 +120,43 @@ class stock_picking(osv.osv):
                                           'uom':op.product_uom_id.name})
             res.update({op.result_package_id.id:package_data})
             
+        
+        package_data = {'no':'%s/%s' % (num_packs,num_packs),
+                        'name':'NOPACKAGE',
+                        'dimensions':'',
+                        'net_weight':'',
+                        'gross_weight':'',
+                        'contents':[{'product':op.product_id.display_name,
+                                     'qty':op.qty_done,
+                                     'uom':op.product_uom_id.name} for op in unpacked_ops]
+                                     }
+           
+        res.update({'no_pack':package_data})    
+            
         return res
     
     def action_print_package(self, cr, uid, ids, pack_id=None, context=None):
         context = dict(context or {}, active_ids=ids, active_model='stock.picking',pack_id=pack_id)
             
-#         picking = self.pool.get('stock.picking').browse(cr, uid, ids, context=context)
-#         res = picking.printable_packages(pack_id)
-#         for k, v in res.items():
-#             print v
+
              
         return self.pool.get("report").get_action(cr, uid, ids, 'warehouse_barcode_interface.aeroo_package_label_print', context=context)
     
 
+class stock_move(osv.osv):
+    _inherit = 'stock.move'
+    
+    def action_done(self, cr, uid, ids, context=None):
+        Picking = self.pool.get('stock.picking')
+        res = super(stock_move, self).action_done(cr, uid, ids, context=context)
+        if res:
+            picking_ids = list(set([m['picking_id'][0] for m in self.read(cr, uid, ids,['picking_id'],context=context)]))
+            
+            pickings_to_print = Picking.search(cr, uid, [('id','in',picking_ids),('picking_type_code','=','outgoing')],context=context)
+            
+            self.pool.get("report").print_document(cr, uid, pickings_to_print, 'warehouse_barcode_interface.aeroo_package_label_print', html=None,
+                data=None, context=context)
+        return res
      
     
     
