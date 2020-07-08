@@ -24,12 +24,17 @@ class StockMove(models.Model):
     @api.multi
     def action_create_procurement(self):
         self.ensure_one()
+        warehouses = self.env['stock.warehouse'].search([])
+        if warehouses:
+            qty_lines = [(0, 0, {'warehouse_id': wh.id}) for wh in warehouses]
+        else:
+            qty_lines = []
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'create.procurement.move',
-            'context': {'default_move_id': self.id},
+            'context': {'default_move_id': self.id, 'default_procurement_qty_ids': qty_lines},
             'target': 'new'
         }
 
