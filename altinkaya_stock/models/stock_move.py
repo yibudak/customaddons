@@ -26,7 +26,10 @@ class StockMove(models.Model):
         self.ensure_one()
         warehouses = self.env['stock.warehouse'].search([])
         if warehouses:
-            qty_lines = [(0, 0, {'warehouse_id': wh.id}) for wh in warehouses]
+            qty_lines = [(0, 0, {
+                'warehouse_id': wh.id,
+                'warehouse_id_readonly': wh.id
+            }) for wh in warehouses]
         else:
             qty_lines = []
         return {

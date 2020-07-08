@@ -20,7 +20,8 @@
 					<group string="Procurement Quantities">
 						<field name="procurement_qty_ids" nolabel="1">
 							<tree editable="1" create="0" delete="0">
-								<field name="warehouse_id" readonly="1"/>
+								<field name="warehouse_id" invisible="1"/>
+								<field name="warehouse_id_readonly" readonly="1"/>
 								<field name="qty_available"/>
 								<field name="qty_incoming"/>
 								<field name="qty_outgoing"/>

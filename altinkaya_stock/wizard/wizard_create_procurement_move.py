@@ -15,6 +15,7 @@ class CreateProcurementMoveLocation(models.TransientModel):
     wizard_id = fields.Many2one('create.procurement.move', 'Wizard')
     qty_to_procurement = fields.Float('Quantity to Procurement')
     warehouse_id = fields.Many2one('stock.warehouse', string='Depo')
+    warehouse_id_readonly = fields.Many2one(related='warehouse_id', string='Depo')
     qty_available = fields.Float('Mevcut', compute='_compute_qty')
     qty_incoming = fields.Float('Gelen', compute='_compute_qty')
     qty_outgoing = fields.Float('Giden', compute='_compute_qty')
@@ -124,6 +125,6 @@ class CreateProcurementMove(models.TransientModel):
 
             self.env['procurement.group'].run(product, product_qty, product_uom, location, "/", origin, values)
 
-        return {}
+        return True
 
 
