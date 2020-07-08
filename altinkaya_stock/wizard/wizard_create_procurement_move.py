@@ -103,7 +103,9 @@ class CreateProcurementMove(models.TransientModel):
         if self.procure_move:
             self.move_id._do_unreserve()
             self.move_id.procure_method = 'make_to_order'
-            self.move_id._action_confirm()
+            # We don't use confirm action. There is procurement action in it.
+            # self.move_id._action_confirm()
+            self.move_id.write({'state': 'waiting'})
 
         for line in self.procurement_qty_ids.filtered(lambda l: l.qty_to_procurement > 0.0):
             group_id = self.env["procurement.group"].create({
