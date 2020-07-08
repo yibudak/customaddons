@@ -24,7 +24,7 @@ class StockMove(models.Model):
     @api.multi
     def action_create_procurement(self):
         self.ensure_one()
-        warehouses = self.env['stock.warehouse'].search([])
+        warehouses = self.env['stock.warehouse'].search([('selectable_on_procurement_wizard', '=', True)])
         if warehouses:
             qty_lines = [(0, 0, {
                 'warehouse_id': wh.id,
