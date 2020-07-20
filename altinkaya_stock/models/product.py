@@ -6,6 +6,14 @@ from odoo import models, fields, api, _
 class Product(models.Model):
     _inherit = "product.product"
 
+    domain_attribute_value_ids = fields.Many2many('product.attribute.value', compute='_compute_domain_attribute_value_ids')
+
+    @api.multi
+    @api.depends('product_tmpl_id', 'product_tmpl_id.valid_product_attribute_value_ids')
+    def _compute_domain_attribute_value_ids(self):
+        for product in self:
+            product.domain_attribute_value_ids = product.product_tmpl_id.attribute_line_ids.mapped('value_ids')
+
     qty_available_sincan = fields.Float('Sincan Depo Mevcut',compute='_compute_custom_available', search='_search_qty_sincan')
     qty_available_merkez = fields.Float('Merkez Depo Mevcut',compute='_compute_custom_available', search='_search_qty_merkez')
     qty_available_enjek = fields.Float('Enjeksiyon Depo Mevcut',compute='_compute_custom2_available', search='_search_qty_enjek')
