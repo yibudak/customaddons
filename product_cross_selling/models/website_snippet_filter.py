@@ -43,12 +43,8 @@ class WebsiteSnippetFilter(models.Model):
         Get related products. Order by website sequence.
         """
         products = self.env["product.product"]
+        tmpl_ids = self.env["product.template"]
         public_categ_ids = current_template.public_categ_ids
-
-        pattern = r"(\d{4}-\d{4})\s+(.*?)\s"
-        match = re.search(pattern, current_template.name)
-        year_range, team_name = match.groups()
-
         domain = expression.AND(
             [
                 domain,
@@ -60,22 +56,28 @@ class WebsiteSnippetFilter(models.Model):
         )
 
         # Firstly, try to find products that have the same year range and team name.
-        tmpl_ids = self.env["product.template"].search(
-            expression.AND(
-                [
-                    domain,
+        pattern = r"(\d{4}-\d{4})\s+(.*?)\s"
+        match = re.search(pattern, current_template.name)
+        if match:
+            year_range, team_name = match.groups()
+
+            tmpl_ids |= self.env["product.template"].search(
+                expression.AND(
                     [
-                        "|",
-                        ("name", "ilike", "%" + year_range + "%"),
-                        ("name", "ilike", "%" + team_name + "%"),
-                    ],
-                ]
-            ),
-            order="website_sequence asc",
-            limit=20,
-        )
+                        domain,
+                        [
+                            "|",
+                            ("name", "ilike", "%" + year_range + "%"),
+                            ("name", "ilike", "%" + team_name + "%"),
+                        ],
+                    ]
+                ),
+                order="website_sequence asc",
+                limit=20,
+            )
+
         if not tmpl_ids:
-            tmpl_ids = self.env["product.template"].search(
+            tmpl_ids |= self.env["product.template"].search(
                 domain, order="website_sequence asc", limit=20
             )
 
