@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import models, api, fields
 from odoo.osv import expression
+import re
 
 
 class WebsiteSnippetFilter(models.Model):
@@ -43,15 +44,41 @@ class WebsiteSnippetFilter(models.Model):
         """
         products = self.env["product.product"]
         public_categ_ids = current_template.public_categ_ids
+
+        pattern = r"(\d{4}-\d{4})\s+(.*?)\s"
+        match = re.search(pattern, current_template.name)
+        year_range, team_name = match.groups()
+
         domain = expression.AND(
             [
                 domain,
-                [("public_categ_ids", "in", public_categ_ids.ids)],
+                [
+                    ("public_categ_ids", "in", public_categ_ids.ids),
+                    ("id", "!=", current_template.id),
+                ],
             ]
         )
+
+        # Firstly, try to find products that have the same year range and team name.
         tmpl_ids = self.env["product.template"].search(
-            domain, order="website_sequence asc", limit=20
+            expression.AND(
+                [
+                    domain,
+                    [
+                        "|",
+                        ("name", "ilike", "%" + year_range + "%"),
+                        ("name", "ilike", "%" + team_name + "%"),
+                    ],
+                ]
+            ),
+            order="website_sequence asc",
+            limit=20,
         )
+        if not tmpl_ids:
+            tmpl_ids = self.env["product.template"].search(
+                domain, order="website_sequence asc", limit=20
+            )
+
         for tmpl in tmpl_ids:
             variant = next(
                 (
