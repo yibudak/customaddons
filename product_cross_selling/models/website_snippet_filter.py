@@ -76,7 +76,8 @@ class WebsiteSnippetFilter(models.Model):
                 limit=20,
             )
 
-        if not tmpl_ids:
+        if not tmpl_ids or len(tmpl_ids) < 8:
+            # If there are not enough products, add others.
             tmpl_ids |= self.env["product.template"].search(
                 domain, order="website_sequence asc", limit=20
             )
