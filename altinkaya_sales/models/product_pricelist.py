@@ -51,6 +51,12 @@ class ProductPricelist(models.Model):
         help="Check stock availability for products in this pricelist",
     )
 
+    alternate_pricelist_id = fields.Many2one(
+        "product.pricelist",
+        string="Alternate Pricelist",
+        help="If set, this pricelist will be showed on the portal account settings",
+    )
+
     @api.multi
     def _compute_price_rule(self, products_qty_partner, date=False, uom_id=False):
         """Low-level method - Mono pricelist, multi products

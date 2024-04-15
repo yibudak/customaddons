@@ -8,6 +8,7 @@
 				<xpath expr="//field[@name='currency_id']" position="after">
 					<field name="list_type_use"/>
 					<field name="allow_check_stock" />
+					<field name="alternate_pricelist_id" />
 				</xpath>
 			</field>
 	</record>
