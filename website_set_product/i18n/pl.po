@@ -1,0 +1,101 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_set_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-18 20:09+0000\n"
+"PO-Revision-Date: 2024-04-18 20:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_product_alert
+msgid ""
+"<i class=\"fa fa-info-circle\"/> When this product is added to the cart, "
+"accessories will also be added. If you wish, you can remove the parts you do"
+" not want from the cart."
+msgstr ""
+"<i class=\"fa fa-info-circle\"/> Po dodaniu tego produktu do koszyka zostaną"
+" dodane również akcesoria. Jeśli Państwo sobie tego życzą, mogą usunąć z "
+"koszyka części, których Państwo nie potrzebują."
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Add one"
+msgstr "Proszę dodać"
+
+#. module: website_set_product
+#: model:ir.model.fields,help:website_set_product.field_product_product__set_product
+#: model:ir.model.fields,help:website_set_product.field_product_template__set_product
+#: model:ir.model.fields,help:website_set_product.field_sale_order_line__set_product
+msgid ""
+"Is this product a set product?If set, an alert will be shown on the product "
+"page."
+msgstr ""
+"Czy ten produkt jest produktem ustawionym? Jeśli jest ustawiony, na stronie "
+"produktu zostanie wyświetlony alert."
+
+#. module: website_set_product
+#: model:ir.model.fields,help:website_set_product.field_product_product__sub_component
+#: model:ir.model.fields,help:website_set_product.field_product_template__sub_component
+msgid ""
+"Is this product a sub-component of a set product?If set, this product will "
+"not be shown in the shop."
+msgstr ""
+"Czy ten produkt jest podkomponentem produktu w zestawie? Jeśli tak, ten "
+"produkt nie będzie widoczny w sklepie."
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_sale_order_line__set_parent_product_id
+msgid "Parent Product"
+msgstr "Produkt macierzysty"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_product_template
+msgid "Product"
+msgstr "Produkt"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Remove from cart"
+msgstr "Proszę usunąć z koszyka"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Remove one"
+msgstr "Proszę usunąć jeden"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_sale_order
+msgid "Sales Order"
+msgstr "Zamówienie sprzedaży"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Pozycja zamówienia sprzedaży"
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_product__set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_template__set_product
+#: model:ir.model.fields,field_description:website_set_product.field_sale_order_line__set_product
+msgid "Set product?"
+msgstr "Proszę ustawić produkt?"
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_product__sub_component
+#: model:ir.model.fields,field_description:website_set_product.field_product_template__sub_component
+msgid "Sub component?"
+msgstr "Podkomponent?"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Warning"
+msgstr "Ostrzeżenie"

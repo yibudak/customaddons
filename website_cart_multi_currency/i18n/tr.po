@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-20 09:19+0000\n"
-"PO-Revision-Date: 2023-10-20 09:19+0000\n"
+"POT-Creation-Date: 2024-04-18 19:52+0000\n"
+"PO-Revision-Date: 2024-04-18 19:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,27 +26,19 @@ msgid "<strong>Total Payment:</strong>"
 msgstr "<strong>Toplam Ödeme:</strong>"
 
 #. module: website_cart_multi_currency
-#: model:ir.model.fields,field_description:website_cart_multi_currency.field_sale_order__active_job_ids
-msgid "Active Job"
-msgstr ""
-
-#. module: website_cart_multi_currency
-#: model:ir.model.fields,field_description:website_cart_multi_currency.field_odoo_sale_order__company_currency_id
 #: model:ir.model.fields,field_description:website_cart_multi_currency.field_sale_order__company_currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Para Birimi"
 
 #. module: website_cart_multi_currency
-#: model:ir.model.fields,field_description:website_cart_multi_currency.field_odoo_sale_order__currency_rate
 #: model:ir.model.fields,field_description:website_cart_multi_currency.field_sale_order__currency_rate
 msgid "Currency Rate"
 msgstr "Para Birimi Çevrim Oranı"
 
 #. module: website_cart_multi_currency
-#: model:ir.model.fields,field_description:website_cart_multi_currency.field_odoo_sale_order__inverse_currency_rate
 #: model:ir.model.fields,field_description:website_cart_multi_currency.field_sale_order__inverse_currency_rate
 msgid "Inverse Currency Rate"
-msgstr ""
+msgstr "Ters Döviz Kuru"
 
 #. module: website_cart_multi_currency
 #: model:ir.model,name:website_cart_multi_currency.model_sale_order
@@ -54,7 +46,6 @@ msgid "Sales Order"
 msgstr "Satış Siparişi"
 
 #. module: website_cart_multi_currency
-#: model:ir.model.fields,field_description:website_cart_multi_currency.field_odoo_sale_order__amount_total_company_currency
 #: model:ir.model.fields,field_description:website_cart_multi_currency.field_sale_order__amount_total_company_currency
 msgid "Total"
-msgstr ""
+msgstr "Toplam"

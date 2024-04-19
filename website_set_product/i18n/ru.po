@@ -1,0 +1,101 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_set_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-18 20:09+0000\n"
+"PO-Revision-Date: 2024-04-18 20:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_product_alert
+msgid ""
+"<i class=\"fa fa-info-circle\"/> When this product is added to the cart, "
+"accessories will also be added. If you wish, you can remove the parts you do"
+" not want from the cart."
+msgstr ""
+"<i class=\"fa fa-info-circle\"/> Когда этот товар будет добавлен в корзину, "
+"к нему также будут добавлены аксессуары. При желании Вы можете удалить из "
+"корзины ненужные Вам детали."
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Add one"
+msgstr "Добавить один"
+
+#. module: website_set_product
+#: model:ir.model.fields,help:website_set_product.field_product_product__set_product
+#: model:ir.model.fields,help:website_set_product.field_product_template__set_product
+#: model:ir.model.fields,help:website_set_product.field_sale_order_line__set_product
+msgid ""
+"Is this product a set product?If set, an alert will be shown on the product "
+"page."
+msgstr ""
+"Является ли этот продукт наборным? Если он наборный, на странице продукта "
+"появится соответствующее предупреждение."
+
+#. module: website_set_product
+#: model:ir.model.fields,help:website_set_product.field_product_product__sub_component
+#: model:ir.model.fields,help:website_set_product.field_product_template__sub_component
+msgid ""
+"Is this product a sub-component of a set product?If set, this product will "
+"not be shown in the shop."
+msgstr ""
+"Является ли этот товар субкомпонентом товара из комплекта? Если из "
+"комплекта, этот товар не будет показан в магазине."
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_sale_order_line__set_parent_product_id
+msgid "Parent Product"
+msgstr "Материнский продукт"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_product_template
+msgid "Product"
+msgstr "Продукт"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Remove from cart"
+msgstr "Удалить из корзины"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Remove one"
+msgstr "Удалить один"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_sale_order
+msgid "Sales Order"
+msgstr "Заказ на продажу"
+
+#. module: website_set_product
+#: model:ir.model,name:website_set_product.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Позиция заказа на продажу"
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_product__set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_template__set_product
+#: model:ir.model.fields,field_description:website_set_product.field_sale_order_line__set_product
+msgid "Set product?"
+msgstr "Установить продукт?"
+
+#. module: website_set_product
+#: model:ir.model.fields,field_description:website_set_product.field_product_product__sub_component
+#: model:ir.model.fields,field_description:website_set_product.field_product_template__sub_component
+msgid "Sub component?"
+msgstr "Подкомпонент?"
+
+#. module: website_set_product
+#: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
+msgid "Warning"
+msgstr "Предупреждение"

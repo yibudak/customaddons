@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-18 14:40+0000\n"
-"PO-Revision-Date: 2023-09-18 14:40+0000\n"
+"POT-Creation-Date: 2024-04-18 20:09+0000\n"
+"PO-Revision-Date: 2024-04-18 20:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,14 +22,13 @@ msgid ""
 "accessories will also be added. If you wish, you can remove the parts you do"
 " not want from the cart."
 msgstr ""
-"<i class=\"fa fa-info-circle\"/> Bu ürün sepete eklendiğinde aksesuarları da "
-"eklenecektir. Dilerseniz istemediğiniz parçaları sepetten"
-" çıkarabilirsiniz."
+"<i class=\"fa fa-info-circle\"/> Bu ürün sepete eklendiğinde aksesuarları da"
+" eklenecektir. Dilerseniz istemediğiniz parçaları sepetten çıkarabilirsiniz."
 
 #. module: website_set_product
 #: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
 msgid "Add one"
-msgstr ""
+msgstr "Bir tane ekle"
 
 #. module: website_set_product
 #: model:ir.model.fields,help:website_set_product.field_product_product__set_product
@@ -63,12 +62,12 @@ msgstr "Ürün"
 #. module: website_set_product
 #: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
 msgid "Remove from cart"
-msgstr ""
+msgstr "Sepetten kaldır"
 
 #. module: website_set_product
 #: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
 msgid "Remove one"
-msgstr ""
+msgstr "Birini kaldır"
 
 #. module: website_set_product
 #: model:ir.model,name:website_set_product.model_sale_order
@@ -96,4 +95,4 @@ msgstr "Alt bileşen?"
 #. module: website_set_product
 #: model_terms:ir.ui.view,arch_db:website_set_product.set_cart_lines
 msgid "Warning"
-msgstr ""
+msgstr "Uyarı"
