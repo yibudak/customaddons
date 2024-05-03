@@ -88,6 +88,8 @@ class Image(models.AbstractModel):
                     '" data-lightbox="product_image',
                     '" data-title="',
                     escape(record.name),
+                    '" data-alt="',
+                    alt or "",
                     '">',
                 ]
                 + img
