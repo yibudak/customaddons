@@ -55,6 +55,7 @@
         "views/sale_portal_templates.xml",
         "views/res_partner_segment_view.xml",
         "views/res_country_view.xml",
+        "views/res_bank_view.xml",
     ],
     "demo": [],
     "installable": True,

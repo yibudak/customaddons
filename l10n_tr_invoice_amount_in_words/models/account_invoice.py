@@ -42,7 +42,7 @@ class SaleOrder(models.Model):
     @api.one
     @api.depends('amount_total', 'currency_id')
     def _compute_sale_order_amount_in_words(self):
-        lang = self.env.context.get('lang', self.sudo().company_id.partner_id.lang)
+        lang = self.env.context.get('lang') or self.partner_id.lang or self.sudo().company_id.partner_id.lang
         self.sale_order_amount_in_words = self.currency_id.with_context({'lang': lang}).amount_to_text(
             self.amount_total)
 
