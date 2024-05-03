@@ -941,12 +941,15 @@
                     <div class="row">
                         <div class="col">
                             <t t-if="doc.currency_id.name == 'TRY'">
+                                <t t-set="currency_name" t-value="'try'"/>
                                 <strong>TRY BANK ACCOUNT INFORMATION</strong>
                             </t>
                             <t t-if="doc.currency_id.name == 'USD'">
+                                <t t-set="currency_name" t-value="'usd'"/>
                                 <strong>USD BANK ACCOUNT INFORMATION</strong>
                             </t>
                             <t t-if="doc.currency_id.name=='EUR'">
+                                <t t-set="currency_name" t-value="'eur'"/>
                                 <strong>EURO BANK ACCOUNT INFORMATION</strong>
                             </t>
                         </div>
@@ -959,74 +962,41 @@
                                     <strong>BENEFICIARY</strong>
                                 </td>
                                 <td style="padding:3px;">
-                                    <span>ALTINKAYA ELEKTRONIK CIH KUT SAN TIC AS</span>
+                                    <span t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].acc_holder_name" />
                                 </td>
                                 <td style="padding:3px;white-space:nowrap;">
                                     <strong>BANK NAME</strong>
                                 </td>
                                 <td style="padding:3px;">
-                                    <span>GARANTI BANK, ANKARA OSB BRANCH (682)</span>
+                                    <span t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id.name"  />
                                 </td>
                             </tr>
                             <tr style="white-space:nowrap;">
-                                <td style="padding:3px;">
-                                    <strong>ACCOUNT NO</strong>
-                                </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='TRY'">
-                                    682-6294510
-                                </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='USD'">
-                                    682-9074502
-                                </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='EUR'">
-                                    682-9074503
-                                </td>
                                 <td style="padding:3px;white-space:nowrap;">
                                     <strong>BANK ADDRESS</strong>
                                 </td>
                                 <td style="padding:3px;">
-                                    <span>AHIEVRAN CD. NO:86 OSTIM YENIMAHALLE 06280 ANKARA TURKEY
-                                    </span>
+                                    <span t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id._display_address()"/>
+                                </td>
+                                <td style="padding:3px;">
+                                    <strong>SWIFT CODE</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_bic" />
                                 </td>
                             </tr>
                             <tr style="white-space:nowrap;">
                                 <td style="padding:3px;">
                                     <strong>IBAN NO</strong>
                                 </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='TRY'">
-                                    <strong>
-                                        TR400006200068200006294510
-                                    </strong>
-                                </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='USD'">
-                                    <strong>
-                                        TR200006200068200009074502
-                                    </strong>
-                                </td>
-                                <td style="padding:3px;" t-if="doc.currency_id.name=='EUR'">
-                                    <strong>
-                                        TR900006200068200009074503
-                                    </strong>
+                                <td style="padding:3px;">
+                                    <strong t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].sanitized_acc_number"/>
                                 </td>
                                 <td style="padding:3px;white-space:nowrap;">
                                     <strong>BANK PHONE</strong>
                                 </td>
                                 <td style="padding:3px;">
-                                    +90 312 3850860
-                                </td>
-                            </tr>
-                            <tr style="white-space:nowrap;">
-                                <td style="padding:3px;">
-                                    <strong>SWIFT CODE</strong>
-                                </td>
-                                <td style="padding:3px;">
-                                    <span>TGBATRIS</span>
-                                </td>
-                                <td style="padding:3px;white-space:nowrap;">
-                                    <strong>BANK FAX</strong>
-                                </td>
-                                <td style="padding:3px;">
-                                    +90 312 3853722
+                                    <span t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id.phone"/>
                                 </td>
                             </tr>
                         </table>

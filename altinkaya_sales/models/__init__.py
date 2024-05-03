@@ -9,3 +9,4 @@ from . import res_user
 from . import portal
 from . import res_partner_segment
 from . import res_country
+from . import res_bank
