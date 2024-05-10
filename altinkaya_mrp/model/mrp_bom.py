@@ -42,6 +42,7 @@ class MrpBoM(models.Model):
     checked = fields.Boolean(
         string="Kontrol Edildi", help="Bileşenler ve ağırlıkları kontrol edildi."
     )
+    tool_product_id = fields.Many2one("product.product", string="Tool")
 
     # TODO: @dogan create work orders override
     #     @api.multi

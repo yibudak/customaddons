@@ -25,6 +25,11 @@
 						</field>
 					</page>
 				</xpath>
+
+				<xpath expr="//field[@name='routing_id']" position="after">
+					<field name="tool_product_id" domain="[('categ_id','ilike', 'kalıp')]" />
+				</xpath>
+
 			</field>
 		</record>
 	</data>
