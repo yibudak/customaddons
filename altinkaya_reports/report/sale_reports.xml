@@ -265,7 +265,7 @@
                                             </td>
                                             <td t-if="display_discount" class="text-right"
                                                 style="padding:0;" groups="sale.group_discount_per_so_line">
-                                                <span t-field="line.discount"/>
+                                                <span t-field="line.discount" t-options="{'precision': 2}"/>
                                             </td>
                                             <td t-if="display_discount" class="text-right"
                                                 style="padding:0;">
@@ -273,8 +273,10 @@
                                             </td>
                                             <td class="text-right o_price_total" style="padding:0;">
                                                 <span t-field="line.price_subtotal"
+                                                      t-options="{'precision': 2}"
                                                       groups="account.group_show_line_subtotals_tax_excluded"/>
                                                 <span t-field="line.price_total"
+                                                      t-options="{'precision': 2}"
                                                       groups="account.group_show_line_subtotals_tax_included"/>
                                             </td>
                                         </t>
@@ -298,7 +300,7 @@
                                             <td t-att-colspan="colspan" style="padding:0;">
                                                 <strong class="mr16">Subtotal</strong>
                                                 <span t-esc="current_subtotal"
-                                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'/>
                                             </td>
                                         </tr>
                                     </t>
@@ -317,7 +319,7 @@
                                             <strong>Toplam</strong>
                                         </td>
                                         <td class="text-right" style="padding:0;">
-                                            <span t-field="doc.amount_untaxed"/>
+                                            <span t-field="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'/>
                                         </td>
                                     </tr>
                                     <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
@@ -331,12 +333,12 @@
                                                         <span>on</span>
                                                         &amp;nbsp;
                                                         <t t-esc="amount_by_group[2]"
-                                                           t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                           t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'/>
                                                     </span>
                                                 </td>
                                                 <td class="text-right o_price_total" style="padding:0;">
                                                     <span t-esc="amount_by_group[1]"
-                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'/>
                                                 </td>
                                             </t>
                                             <t t-else="">
@@ -347,7 +349,7 @@
                                                 </td>
                                                 <td class="text-right o_price_total" style="padding:0;">
                                                     <span t-esc="amount_by_group[1]"
-                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'/>
                                                 </td>
                                             </t>
                                         </tr>
@@ -357,7 +359,7 @@
                                             <strong>Genel Toplam</strong>
                                         </td>
                                         <td class="text-right" style="padding:0;">
-                                            <span t-field="doc.amount_total"/>
+                                            <span t-field="doc.amount_total" t-options="{'widget': 'monetary', 'precision': 2}"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -816,7 +818,7 @@
                                             </td>
                                             <td t-if="display_discount" class="text-right"
                                                 style="padding:0;" groups="sale.group_discount_per_so_line">
-                                                <span t-field="line.discount"/>
+                                                <span t-field="line.discount" t-options="{'precision': 2}"/>
                                             </td>
                                             <td t-if="display_discount" class="text-right"
                                                 style="padding:0;">
@@ -825,8 +827,10 @@
                                             </td>
                                             <td class="text-right o_price_total" style="padding:0;">
                                                 <span t-field="line.price_subtotal"
+                                                      t-options="{'precision': 2}"
                                                       groups="account.group_show_line_subtotals_tax_excluded"/>
                                                 <span t-field="line.price_total"
+                                                      t-options="{'precision': 2}"
                                                       groups="account.group_show_line_subtotals_tax_included"/>
                                             </td>
                                         </t>
@@ -850,7 +854,7 @@
                                             <td t-att-colspan="colspan" style="padding:0;">
                                                 <strong class="mr16">Subtotal</strong>
                                                 <span t-esc="current_subtotal"
-                                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'/>
                                             </td>
                                         </tr>
                                     </t>
@@ -869,7 +873,7 @@
                                             <strong>Subtotal</strong>
                                         </td>
                                         <td class="text-right" style="padding:0;">
-                                            <span t-field="doc.amount_untaxed"/>
+                                            <span t-field="doc.amount_untaxed" t-options="{'precision': 2}"/>
                                         </td>
                                     </tr>
                                     <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
@@ -883,12 +887,12 @@
                                                         <span>on</span>
                                                         &amp;nbsp;
                                                         <t t-esc="amount_by_group[2]"
-                                                           t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                           t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'/>
                                                     </span>
                                                 </td>
                                                 <td class="text-right o_price_total" style="padding:0;">
                                                     <span t-esc="amount_by_group[1]"
-                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'/>
                                                 </td>
                                             </t>
                                             <t t-else="">
@@ -899,7 +903,7 @@
                                                 </td>
                                                 <td class="text-right o_price_total" style="padding:0;">
                                                     <span t-esc="amount_by_group[1]"
-                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'/>
                                                 </td>
                                             </t>
                                         </tr>
@@ -909,7 +913,7 @@
                                             <strong>Total</strong>
                                         </td>
                                         <td class="text-right" style="padding:0;">
-                                            <span t-field="doc.amount_total"/>
+                                            <span t-field="doc.amount_total" t-options="{'widget': 'monetary', 'precision': 2}"/>
                                         </td>
                                     </tr>
                                 </table>
