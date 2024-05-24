@@ -1,6 +1,6 @@
 {
     'name': 'Localization TR  Address',
-    'version': '12.0.2',
+    'version': '16.0.1.0.0',
     'summary': "Add custom field in Customer like District, Region, Neighbourhood",
     'description': """This Module is used to add custom field in res.partner Object""",
     'category': 'Partner',

@@ -6,7 +6,7 @@
     "author": "Samet Altuntaş",
     "category": "General",
     "website": "https://github.com/samettal/",
-    "version": "12.0.1.0",
+    "version": "16.0.1.0.0",
     "depends": ["sale"],
     "data": [
         "views/sale_views.xml",

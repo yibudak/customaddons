@@ -4,7 +4,7 @@
 {
     'name': 'Short URL Yourls',
     'summary': 'YOURLS (FOSS URL shortener service) integration, see yourls.org',
-    'version': '12.0.1.0.1',
+    'version': '16.0.1.0.0',
     'development_status': 'Mature',
     'category': 'Tools',
     'website': 'https://github.com/yibudak',

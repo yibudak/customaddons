@@ -10,7 +10,7 @@
     'author': "Yavuz Avcı,Yiğit Budak",
     'website': "",
     'category': 'Uncategorized',
-    'version': '1.0',
+    'version': '16.0.1.0.0',
     'depends': ['excel_import_export', 'purchase', 'account'],
     'data': [
         # Purchase

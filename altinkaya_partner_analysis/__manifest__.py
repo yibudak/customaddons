@@ -11,7 +11,7 @@
 
 {
     'name' : 'Partner Analysis',
-    'version' : '1.1',
+    'version' : '16.0.1.0.0',
     'author' : 'Acespritech Solutions Pvt. Ltd.',
     'category' : 'Account',
     'description' : """Partner Analysis""",
