@@ -7,12 +7,16 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     @api.multi
-    @api.depends("property_account_receivable_id")
+    @api.depends("property_account_receivable_id", "property_account_payable_id")
     def _get_partner_currency(self):
         for partner in self:
-            if partner.property_account_receivable_id.currency_id:
+            if (
+                partner.property_account_receivable_id.currency_id
+                or partner.property_account_payable_id.currency_id
+            ):
                 partner.partner_currency_id = (
                     partner.property_account_receivable_id.currency_id
+                    or partner.property_account_payable_id.currency_id
                 )
             else:
                 partner.partner_currency_id = partner.sudo().company_id.currency_id

@@ -85,9 +85,46 @@ class ResPartner(models.Model):
         "Credit Insurance",
         default=False,
     )
-    credit_insurance_validity = fields.Date(
-        "Credit Insurance Validity"
-    )
+    credit_insurance_validity = fields.Date("Credit Insurance Validity")
+
+    @api.constrains("country_id")
+    def _check_country_accounts(self):
+        """
+        Automatically change payable and receivable accounts when country is changed.
+        :return:
+        """
+        AccountAccount = self.env["account.account"]
+        for rec in self:
+            country_default_currency = rec.country_id.default_currency_id
+            commercial = rec.commercial_partner_id
+            partner_move_lines = self.env["account.move.line"].search(
+                [
+                    ("partner_id", "=", commercial.id),
+                    ("account_id.user_type_id.type", "in", ("payable", "receivable")),
+                ]
+            )
+            if (
+                rec == commercial
+                and country_default_currency
+                and not partner_move_lines
+            ):
+                payable_account = AccountAccount.search(
+                    [
+                        ("code", "=", "320.%s" % country_default_currency.name),
+                        ("user_type_id.type", "=", "payable"),
+                    ],
+                    limit=1,
+                )
+                receivable_account = AccountAccount.search(
+                    [
+                        ("code", "=", "120.%s" % country_default_currency.name),
+                        ("user_type_id.type", "=", "receivable"),
+                    ],
+                    limit=1,
+                )
+                if payable_account and receivable_account:
+                    rec.property_account_payable_id = payable_account
+                    rec.property_account_receivable_id = receivable_account
 
     @api.depends(lambda x: x._get_depends_compute_risk_exception())
     def _compute_risk_exception(self):
@@ -97,7 +134,10 @@ class ResPartner(models.Model):
         """
         super()._compute_risk_exception()
         for rec in self:
-            if rec.credit_insurance and rec.credit_insurance_validity < fields.Date.today():
+            if (
+                rec.credit_insurance
+                and rec.credit_insurance_validity < fields.Date.today()
+            ):
                 rec.risk_exception = True
 
     @api.multi
