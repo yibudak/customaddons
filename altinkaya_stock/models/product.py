@@ -19,6 +19,13 @@ class ProductTemplate(models.Model):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    @api.constrains("default_code")
+    def _check_default_code_unique(self):
+        for template in self:
+            if template.default_code:
+                if self.search_count([("default_code", "=", template.default_code)]) > 1:
+                    raise UserError(_("The default code must be unique."))
+
     @api.multi
     def _compute_currency_id(self):
         main_company = self.env['res.company']._get_main_company()
