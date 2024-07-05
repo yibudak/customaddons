@@ -74,7 +74,17 @@ class AltinkaynakConnector:
         res = {}
         for currency in currencies:
             res[currency] = {
-                "AltinkaynakBuying": 1 / float(soup.find("td", attrs={"id": f"td{currency.upper()}Buy"}).next),
-                "AltinkaynakSelling": 1 / float(soup.find("td", attrs={"id": f"td{currency.upper()}Sell"}).next),
+                "AltinkaynakBuying": 1
+                / float(
+                    soup.find(
+                        "td", attrs={"id": f"td{currency.upper()}Buy"}
+                    ).next.replace(",", ".")
+                ),
+                "AltinkaynakSelling": 1
+                / float(
+                    soup.find(
+                        "td", attrs={"id": f"td{currency.upper()}Sell"}
+                    ).next.replace(",", ".")
+                ),
             }
         return res
