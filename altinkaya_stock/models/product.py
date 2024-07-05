@@ -19,6 +19,8 @@ class ProductTemplate(models.Model):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    default_code = fields.Char(copy=False)
+
     @api.constrains("default_code")
     def _check_default_code_unique(self):
         for template in self:
@@ -58,6 +60,7 @@ class ProductTemplate(models.Model):
 class Product(models.Model):
     _inherit = "product.product"
 
+    default_code = fields.Char(copy=False)
     responsible_employee_id = fields.Many2one(
         comodel_name="hr.employee",
         string="Responsible Employee"
