@@ -15,7 +15,7 @@ class AccountPayment(models.Model):
     # state = fields.Selection(track_visibility='always')
     amount = fields.Monetary(track_visibility='always')
     partner_id = fields.Many2one(track_visibility='always')
-    journal_id = fields.Many2one(track_visibility='always')
+    journal_id = fields.Many2one('account.journal', track_visibility='always')
     destination_journal_id = fields.Many2one(track_visibility='always')
     currency_id = fields.Many2one(track_visibility='always')
     # campo a ser extendido y mostrar un nombre detemrinado en las lineas de

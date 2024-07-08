@@ -39,6 +39,12 @@ class AccountPayment(models.Model):
         " for when the bank credits all the checks in a single movement",
     )
 
+    debit = fields.Float(string="Debit", readonly=True)
+    credit = fields.Float(string="Credit", readonly=True)
+    amount_currency = fields.Monetary(
+        string="Amount", currency_field='currency_id')
+
+
 
     @api.depends('check_ids')
     def _compute_check(self):
