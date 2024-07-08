@@ -23,110 +23,76 @@ class ResPartner(models.Model):
 
     @api.multi
     @api.depends("move_line_ids")
-    def _compute_balances(self):
-        AccountMoveLine = self.env["account.move.line"]
-        domain = [
-            ("partner_id", "in", self.ids),
-            ("account_id.internal_type", "in", ["receivable", "payable"]),
-            ("date", ">=", "2021-01-01"),
-        ]
+    def _compute_balance_fields(self):
+        """
+        Compute balance fields for partners. Using SQL to avoid performance issues and update_date field update.
+        :return:
+        """
+        if not self.ids:
+            return True
+        query = """
+        UPDATE 
+          res_partner rp 
+        SET 
+          balance_due = CASE WHEN due_balance_table.due_balance > 0 THEN due_balance_table.due_balance ELSE 0 END, 
+          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0 THEN due_balance_table.due_amount_currency ELSE 0 END, 
+          balance = balance_table.balance, 
+          currency_balance = balance_table.amount_currency
+        FROM 
+          (
+            SELECT 
+              aml.partner_id AS partner_id, 
+              SUM(aml.debit) - SUM(aml.credit) AS due_balance, 
+              SUM(aml.amount_currency) AS due_amount_currency 
+            FROM 
+              account_move_line aml 
+              LEFT JOIN account_account aa ON aa.id = aml.account_id 
+            WHERE 
+              aa.internal_type IN ('receivable', 'payable') 
+              AND NOT aa.deprecated 
+              AND aml.date >= '2021-01-01' 
+              AND aml.date_maturity <= CURRENT_DATE 
+              AND aml.partner_id IN %s 
+            GROUP BY 
+              aml.partner_id
+          ) AS due_balance_table, 
+          (
+            SELECT 
+              aml.partner_id AS partner_id, 
+              SUM(aml.debit) - SUM(aml.credit) AS balance, 
+              SUM(aml.amount_currency) AS amount_currency 
+            FROM 
+              account_move_line aml 
+              LEFT JOIN account_account aa ON aa.id = aml.account_id 
+            WHERE 
+              aa.internal_type IN ('receivable', 'payable') 
+              AND NOT aa.deprecated 
+              AND aml.date >= '2021-01-01' 
+              AND aml.partner_id IN %s 
+            GROUP BY 
+              aml.partner_id
+          ) AS balance_table 
+        WHERE 
+          rp.id = due_balance_table.partner_id 
+          AND rp.id = balance_table.partner_id 
+          AND rp.id IN %s;
 
-        result = dict(
-            (
-                item["partner_id"][0],
-                [item["debit"] - item["credit"], item["amount_currency"]],
-            )
-            for item in AccountMoveLine.read_group(
-                domain,
-                ["partner_id", "credit", "debit", "amount_currency"],
-                ["partner_id"],
-                orderby="id",
-            )
+        """
+        params = (tuple(self.ids), tuple(self.ids), tuple(self.ids))
+        self._cr.execute(query, params)
+        # HACK: Since we are directly updating the database in a compute method, this causes the cache to be out of sync
+        # also invalidate_cache() method causes CacheMiss error, this looks like a bug in Odoo,
+        # so we are using search_read to update the cache.
+        self.search_read(
+            domain=[("id", "in", self.ids)],
+            fields=[
+                "balance",
+                "currency_balance",
+                "balance_due",
+                "currency_balance_due",
+            ],
         )
-        for partner in self:
-            if result.get(partner.id, False):
-                partner.balance = result[partner.id][0]
-                partner.currency_balance = result[partner.id][1]
-
-    @api.multi
-    @api.depends("move_line_ids")
-    def _compute_due_balances(self):
-        AccountMoveLine = self.env["account.move.line"]
-        domain = [
-            ("partner_id", "in", self.ids),
-            ("account_id.internal_type", "in", ["receivable", "payable"]),
-            ("date", ">=", "2021-01-01"),
-            ("date_maturity", "<=", fields.Date.today()),
-        ]
-
-        result = dict(
-            (
-                item["partner_id"][0],
-                [item["debit"] - item["credit"], item["amount_currency"]],
-            )
-            for item in AccountMoveLine.read_group(
-                domain,
-                ["partner_id", "credit", "debit", "amount_currency"],
-                ["partner_id"],
-                orderby="id",
-            )
-        )
-        for partner in self:
-            if result.get(partner.id, False):
-                partner.balance_due = (
-                    result[partner.id][0] if result[partner.id][0] > 0 else 0
-                )
-                partner.currency_balance_due = (
-                    result[partner.id][1] if result[partner.id][1] > 0 else 0
-                )
-
-    @api.multi
-    def _search_currency_balance(self, operator, operand):
-        if operator not in ("<", "=", ">", ">=", "<="):
-            return []
-        if type(operand) not in (float, int):
-            return []
-        sign = 1
-        move_type = ("payable", "receivable")
-        self._cr.execute(
-            f"""   SELECT partner.id
-                                FROM res_partner partner
-                                LEFT JOIN account_move_line aml ON aml.partner_id = partner.id
-                                RIGHT JOIN account_account acc ON aml.account_id = acc.id
-                                WHERE acc.internal_type in %s
-			                    AND NOT acc.deprecated AND acc.company_id = %s
-                                GROUP BY partner.id
-                                HAVING %s * COALESCE(SUM(aml.amount_currency), 0) {operator} %s""",
-            (move_type, self.env.user.company_id.id, sign, operand),
-        )
-        res = self._cr.fetchall()
-        if not res:
-            return [("id", "=", "0")]
-        return [("id", "in", [r[0] for r in res])]
-
-    @api.multi
-    def _search_balance(self, operator, operand):
-        if operator not in ("<", "=", ">", ">=", "<="):
-            return []
-        if type(operand) not in (float, int):
-            return []
-        sign = 1
-        move_type = ("payable", "receivable")
-        self._cr.execute(
-            f"""   SELECT partner.id
-                                    FROM res_partner partner
-                                    LEFT JOIN account_move_line aml ON aml.partner_id = partner.id
-                                    RIGHT JOIN account_account acc ON aml.account_id = acc.id
-                                    WHERE acc.internal_type in %s
-    			                    AND NOT acc.deprecated AND acc.company_id = %s
-                                    GROUP BY partner.id
-                                    HAVING %s * COALESCE(SUM(aml.debit-aml.credit), 0) {operator} %s""",
-            (move_type, self.env.user.company_id.id, sign, operand),
-        )
-        res = self._cr.fetchall()
-        if not res:
-            return [("id", "=", "0")]
-        return [("id", "in", [r[0] for r in res])]
+        return True
 
     partner_currency_id = fields.Many2one(
         "res.currency",
@@ -137,22 +103,26 @@ class ResPartner(models.Model):
     )
 
     balance = fields.Monetary(
-        string="TRY Balance", compute="_compute_balances", store=True
+        string="TRY Balance",
+        compute="_compute_balance_fields",
+        store=True,
     )
     currency_balance = fields.Monetary(
         string="Partner Currency Balance",
-        compute="_compute_balances",
+        compute="_compute_balance_fields",
         currency_field="partner_currency_id",
         store=True,
     )
 
     balance_due = fields.Monetary(
-        string="TRY Balance Due", compute="_compute_due_balances", store=True
+        string="TRY Balance Due",
+        store=True,
+        compute="_compute_balance_fields",
     )
     currency_balance_due = fields.Monetary(
         string="Partner Currency Balance Due",
-        compute="_compute_due_balances",
         currency_field="partner_currency_id",
+        compute="_compute_balance_fields",
         store=True,
     )
 
