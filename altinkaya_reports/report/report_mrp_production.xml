@@ -75,7 +75,7 @@
 
 
                                         <t>
-                                            <t t-esc="int(o.product_qty) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"/>
+                                            <t t-esc="int(round(o.product_qty, 2)) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"/>
                                             <span t-field="o.product_uom_id.name"/>
                                         </t>
                                         <span t-field="o.product_id.display_name"/>
@@ -184,7 +184,7 @@
 
                                         <td style="font-size:12px;" class="text-right">
                                             <t>
-                                                <t t-esc="int(line.product_qty) if round(line.product_qty, 2).is_integer() else '{:.2f}'.format(line.product_qty)"/>
+                                                <t t-esc="int(round(line.product_uom_qty, 2)) if round(line.product_uom_qty, 2).is_integer() else '{:.2f}'.format(line.product_uom_qty)"/>
                                                 <span t-field="line.product_uom.name" groups="product.group_uom"/>
 
                                             </t>
