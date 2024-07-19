@@ -56,9 +56,20 @@ class AccountInvoice(models.Model):
         return res
 
     def action_invoice_open(self):
-        """write suppliers selected expense account to partner record and use it for next invoice """
-
+        """
+        Inherited to add controls over invoice validation.
+        :return:
+        """
         for invoice in self:
+
+            # Check if payment term forces to use TRY currency
+            if invoice.payment_term_id and invoice.payment_term_id.convert_invoice_to_try:
+                invoice.currency_id = self.env.ref('base.TRY')
+                invoice._onchange_currency()
+                invoice._onchange_currency_change_rate()
+                invoice.action_account_change_currency()
+
+            # write suppliers selected expense account to partner record and use it for next invoice
             invoice._onchange_invoice_line_ids()  # Recompute taxes
             if invoice.type == 'in_invoice' and fields.first(invoice.invoice_line_ids).account_id:
                 invoice.partner_id.write({"purchase_default_account_id": fields.first(invoice.invoice_line_ids).account_id.id})
