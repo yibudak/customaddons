@@ -25,6 +25,7 @@ class AccountInvoiceReport(models.Model):
     price_total_usd = fields.Float(string='Untaxed Total USD', readonly=True)
     total_tax = fields.Float(string='Tax Total', readonly=True)
     price_average_usd = fields.Float(string='Average Price USD', readonly=True, group_operator="avg")
+    mass_campaign_id = fields.Many2one('utm.campaign', string='Campaign Partners', readonly=True)
     # partner UTM fields
     partner_source_id = fields.Many2one('utm.source', string='P. Marketing Source', readonly=True)
     partner_campaign_id = fields.Many2one('utm.campaign', string='P. Marketing Campaign', readonly=True)
@@ -40,13 +41,14 @@ class AccountInvoiceReport(models.Model):
 
     def _select(self):
         return super(AccountInvoiceReport, self)._select() + \
-               ", sub.state_id, sub.total_tax as total_tax, sub.price_total_usd as price_total_usd, sub.price_average_usd as price_average_usd, sub.partner_source_id as partner_source_id, sub.partner_campaign_id as partner_campaign_id, sub.partner_medium_id as partner_medium_id, sub.month_nr as month_nr, sub.sale_source_id as sale_source_id, sub.sale_campaign_id as sale_campaign_id, sub.sale_medium_id as sale_medium_id, sub.partner_create_date as partner_create_date, product_tmpl_id as product_tmpl_id"
+               ", sub.state_id, sub.total_tax as total_tax, sub.mass_campaign_id as mass_campaign_id, sub.price_total_usd as price_total_usd, sub.price_average_usd as price_average_usd, sub.partner_source_id as partner_source_id, sub.partner_campaign_id as partner_campaign_id, sub.partner_medium_id as partner_medium_id, sub.month_nr as month_nr, sub.sale_source_id as sale_source_id, sub.sale_campaign_id as sale_campaign_id, sub.sale_medium_id as sale_medium_id, sub.partner_create_date as partner_create_date, product_tmpl_id as product_tmpl_id"
 
     def _sub_select(self):
         return super(AccountInvoiceReport, self)._sub_select() + \
                """, coalesce(partner.state_id, partner_ai.state_id) AS state_id,
                partner.source_id as partner_source_id,partner.campaign_id as partner_campaign_id, partner.medium_id as partner_medium_id,
                partner.create_date as partner_create_date,
+               partner_campaign_rel.utm_campaign_id as mass_campaign_id,
                pt.id as product_tmpl_id,
                 so.source_id as sale_source_id,so.campaign_id as sale_campaign_id, so.medium_id as sale_medium_id,
                to_char(ai.date_invoice, 'MM') AS month_nr,
@@ -59,7 +61,7 @@ class AccountInvoiceReport(models.Model):
                 END AS price_average_usd"""
 
     def _group_by(self):
-        return super(AccountInvoiceReport, self)._group_by() + ", coalesce(partner.state_id, partner_ai.state_id),so.source_id, so.medium_id, partner.create_date, so.campaign_id,partner.source_id,partner.campaign_id,partner.medium_id,month_nr, pt.id"
+        return super(AccountInvoiceReport, self)._group_by() + ", coalesce(partner.state_id, partner_ai.state_id),so.source_id, so.medium_id, partner.create_date, so.campaign_id,partner.source_id,partner.campaign_id,partner.medium_id,month_nr, pt.id, partner_campaign_rel.utm_campaign_id"
 
     def _from(self):
         return super(AccountInvoiceReport, self)._from() + \
@@ -67,4 +69,5 @@ class AccountInvoiceReport(models.Model):
                LEFT JOIN sale_order_line_invoice_rel solir ON (ail.id = solir.invoice_line_id)
                LEFT JOIN sale_order_line sol ON (solir.order_line_id = sol.id)
                LEFT JOIN sale_order so ON (sol.order_id = so.id)
+               LEFT JOIN utm_campaign_partner_rel partner_campaign_rel ON (partner_campaign_rel.res_partner_id = partner.id)
                """
