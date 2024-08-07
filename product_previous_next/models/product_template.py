@@ -1,6 +1,7 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import models, fields
+from odoo.http import request
 
 
 class ProductTemplate(models.Model):
@@ -19,11 +20,18 @@ class ProductTemplate(models.Model):
     )
 
     def _base_order_domain(self, website_id):
+        request_categ_id = request.params.get("category")
+        if request_categ_id:
+            categ_id = [request_categ_id]
+
+        else:
+            categ_id = self.mapped("public_categ_ids.id")
+
         return [
             ("sale_ok", "=", True),
             ("categ_id.is_published", "=", True),
             ("is_published", "=", True),
-            ("public_categ_ids", "in", self.mapped("public_categ_ids.id")),
+            ("public_categ_ids", "in", categ_id),
             ("website_id", "in", [website_id.id, False]),
         ]
 
