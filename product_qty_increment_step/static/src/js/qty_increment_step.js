@@ -68,7 +68,7 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
             }
 
             const remainder = qty % $incrementSize;
-            if (remainder !== 0) {
+            if (remainder > 0) {
                 // Round to the nearest increment step value based on whether the value is increasing or decreasing
                 const prevQty = parseInt($input.data("prevQty"), 10) || $incrementSize;
                 if (qty < prevQty) {
