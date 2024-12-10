@@ -452,13 +452,13 @@
                                     Garanti Bankası
                                 </td>
                                 <td style="padding: 0;">
-                                    682
+                                    481
                                 </td>
                                 <td style="padding: 0;">
-                                    6294510
+                                    6298017
                                 </td>
                                 <td style="padding: 0;">
-                                    TR40 0006 2000 6820 0006 2945 10 (TL)
+                                    TR95 0006 2000 4810 0006 2980 17 (TL)
                                 </td>
                             </tr>
 <!--                            <t t-if="doc.currency_id.name in ['USD','EUR']">-->

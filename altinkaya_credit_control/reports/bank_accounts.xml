@@ -50,13 +50,13 @@
                             Garanti Bankası
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            682
+                            481
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            6294510
+                            6298017
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            TR40 0006 2000 6820 0006 2945 10 (TL)
+                            TR95 0006 2000 4810 0006 2980 17 (TL)
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +121,7 @@
                             <strong>BANK NAME</strong>
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            <span>GARANTI BANK, ANKARA OSB BRANCH (682)</span>
+                            <span>GARANTI BANK, ANKARA OSTIM AHI EVRAN BRANCH (481)</span>
                         </td>
                     </tr>
                     <tr style="white-space:nowrap;">
@@ -129,13 +129,13 @@
                             <strong>ACCOUNT NO</strong>
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='TRY'">
-                            682-6294510
+                            481-6298017
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='USD'">
-                            682-9074502
+                            481-9097055
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='EUR'">
-                            682-9074503
+                            481-9097053
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <strong>BANK ADDRESS</strong>
@@ -151,17 +151,17 @@
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='TRY'">
                             <strong>
-                                TR400006200068200006294510
+                                TR950006200048100006298017
                             </strong>
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='USD'">
                             <strong>
-                                TR200006200068200009074502
+                                TR300006200048100009097055
                             </strong>
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='EUR'">
                             <strong>
-                                TR900006200068200009074503
+                                TR840006200048100009097053
                             </strong>
                         </td>
                         <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">

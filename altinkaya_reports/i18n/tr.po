@@ -77,7 +77,7 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_saleorder_document
-msgid "682-6294510"
+msgid "481-6298017"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -92,7 +92,7 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_saleorder_document
-msgid "6294510"
+msgid "6298017"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -382,8 +382,8 @@ msgid "<span>Telefon: +90 312 395 2768 |\n"
 "								İvedik Vergi Dairesi 0610422947\n"
 "							</span>\n"
 "							<br/>\n"
-"							<span>Garanti Bankası: 682-6294510 IBAN: TR40 0006 2000 6820 0006\n"
-"								2945 10 (TL)\n"
+"							<span>Garanti Bankası: 481-6298017 IBAN: TR95 0006 2000 4810 0006\n"
+"								2980 17 (TL)\n"
 "							</span>\n"
 "							<br/>\n"
 "							<span>\n"
@@ -396,8 +396,8 @@ msgstr "<span>Telefon: +90 312 395 2768 |\n"
 "								İvedik Vergi Dairesi 0610422947\n"
 "							</span>\n"
 "							<br/>\n"
-"							<span>Garanti Bankası: 682-6294510 IBAN: TR40 0006 2000 6820 0006\n"
-"								2945 10 (TL)\n"
+"							<span>Garanti Bankası: 481-6298017 IBAN: TR95 0006 2000 4810 0006\n"
+"								2980 17 (TL)\n"
 "							</span>\n"
 "							<br/>\n"
 "							<span>\n"
@@ -1512,12 +1512,12 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_saleorder_document
-msgid "TR40 0006 2000 6820 0006 2945 10"
+msgid "TR95 0006 2000 4810 0006 2980 17"
 msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_saleorder_document
-msgid "TR400006200068200006294510"
+msgid "TR950006200048100006298017"
 msgstr ""
 
 #. module: altinkaya_reports
