@@ -7,87 +7,87 @@
                 Ödemenizi aşağıdaki banka hesaplarımıza yapabilir veya diğer ödeme<br/>
                 yöntemleri için bizimle iletişime geçebilirsiniz.
             </p>
-                <table style="table-layout:auto;">
-                    <tr style="font-size:14px;">
-                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
-                            <span>
+            <table style="table-layout:auto;">
+                <tr style="font-size:14px;">
+                    <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                        <span>
                                 Banka Adı
-                            </span>
-                        </th>
+                        </span>
+                    </th>
 
-                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
-                            <span>
+                    <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                        <span>
                                 Şb.Kd.
-                            </span>
-                        </th>
-                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
-                            <span>
+                        </span>
+                    </th>
+                    <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                        <span>
                                 Hs.No.
-                            </span>
-                        </th>
-                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
-                            <span>
+                        </span>
+                    </th>
+                    <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                        <span>
                                 IBAN
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                        </span>
+                    </th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             İş Bankası
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             4384
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             0012114
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             TR26 0006 4000 0014 3840 0121 14 (TL)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             Garanti Bankası
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             481
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             6298017
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             TR95 0006 2000 4810 0006 2980 17 (TL)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             AKBANK
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            945
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            1322
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
-                            TR90 0004 6009 4588 8000 0013 22 (TL)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            603
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            0245049
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            TR18 0004 6006 0388 8000 2450 49 (TL)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             Ziraat Bankası
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             1912
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             82247151-5001
-                        </td>
-                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                    </td>
+                    <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             TR47 0001 0019 1282 2471 5150 01 (TL)
-                        </td>
-                    </tr>
-                </table>
+                    </td>
+                </tr>
+            </table>
         </t>
 
         <t t-else="">
