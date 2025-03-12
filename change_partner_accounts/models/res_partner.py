@@ -65,7 +65,7 @@ class ResPartner(models.Model):
             WHERE 
               aa.internal_type IN ('receivable', 'payable') 
               AND NOT aa.deprecated 
-              AND aml.date >= '2021-01-01' 
+              AND aml.date >= '2022-01-01' 
               AND aml.date_maturity <= CURRENT_DATE 
               AND aml.partner_id IN %s 
             GROUP BY 
@@ -82,7 +82,7 @@ class ResPartner(models.Model):
             WHERE 
               aa.internal_type IN ('receivable', 'payable') 
               AND NOT aa.deprecated 
-              AND aml.date >= '2021-01-01' 
+              AND aml.date >= '2022-01-01' 
               AND aml.partner_id IN %s 
             GROUP BY 
               aml.partner_id
