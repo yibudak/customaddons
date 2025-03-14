@@ -61,12 +61,14 @@ class ResPartner(models.Model):
               SUM(aml.amount_currency) AS due_amount_currency 
             FROM 
               account_move_line aml 
-              LEFT JOIN account_account aa ON aa.id = aml.account_id 
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON am.id = aml.move_id
             WHERE 
               aa.internal_type IN ('receivable', 'payable') 
               AND NOT aa.deprecated 
               AND aml.date >= '2022-01-01' 
-              AND aml.date_maturity <= CURRENT_DATE 
+              AND aml.date_maturity <= CURRENT_DATE
+              AND am.state = 'posted'
               AND aml.partner_id IN %s 
             GROUP BY 
               aml.partner_id
@@ -78,11 +80,13 @@ class ResPartner(models.Model):
               SUM(aml.amount_currency) AS amount_currency 
             FROM 
               account_move_line aml 
-              LEFT JOIN account_account aa ON aa.id = aml.account_id 
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON am.id = aml.move_id
             WHERE 
               aa.internal_type IN ('receivable', 'payable') 
               AND NOT aa.deprecated 
-              AND aml.date >= '2022-01-01' 
+              AND aml.date >= '2022-01-01'
+              AND am.state = 'posted'
               AND aml.partner_id IN %s 
             GROUP BY 
               aml.partner_id
