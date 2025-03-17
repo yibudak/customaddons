@@ -96,14 +96,16 @@ class Partner(models.Model):
         LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID) LEFT JOIN ACCOUNT_ACCOUNT_TYPE AT ON (A.USER_TYPE_ID = AT.ID)
         LEFT JOIN ACCOUNT_INVOICE INV ON (L.INVOICE_ID = INV.ID)
         WHERE (L.DATE BETWEEN '{0}' AND '{1}')
-        AND L.PARTNER_ID = {2}
-        AND AT.TYPE IN {3}
+        AND AM.date >= {2}
+        AND L.PARTNER_ID = {3}
+        AND AT.TYPE IN {4}
         AND AM.state = 'posted'
         GROUP BY AJ.NAME, A.CODE, A.CURRENCY_ID, L.MOVE_ID,	AM.NAME,	AM.STATE,	L.DATE,	L.DATE_MATURITY,	L.CURRENCY_ID,	L.COMPANY_CURRENCY_ID,
         INV.NUMBER,INV.SUPPLIER_INVOICE_NUMBER,	AJ.ID,	L.ACCOUNT_ID, L.FULL_RECONCILE_ID
         ORDER BY ACCOUNT_CURRENCY, L.DATE""".format(
             str(start_date),
             str(end_date),
+            str(start_date),
             str(self.commercial_partner_id.id),
             str(move_type),
         )
