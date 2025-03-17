@@ -96,7 +96,7 @@ class Partner(models.Model):
         LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID) LEFT JOIN ACCOUNT_ACCOUNT_TYPE AT ON (A.USER_TYPE_ID = AT.ID)
         LEFT JOIN ACCOUNT_INVOICE INV ON (L.INVOICE_ID = INV.ID)
         WHERE (L.DATE BETWEEN '{0}' AND '{1}')
-        AND AM.date >= {2}
+        AND AM.date >= '{2}'
         AND L.PARTNER_ID = {3}
         AND AT.TYPE IN {4}
         AND AM.state = 'posted'
