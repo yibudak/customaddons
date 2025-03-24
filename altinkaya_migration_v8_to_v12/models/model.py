@@ -227,4 +227,6 @@ class MrpWorkorder(models.Model):
     _name="mrp.workorder"
     _inherit = ["mrp.workorder","migration.mapping"] 
     
-    
+class AccountFullReconcile(models.Model):
+    _name="account.full.reconcile"
+    _inherit = ["account.full.reconcile","migration.mapping"]
